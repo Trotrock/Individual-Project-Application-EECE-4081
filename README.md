@@ -5,3 +5,4 @@ This repository is the main location for the Software Engineering individual app
   
 
 - The application will make use of the python programming language alongside the Django framework for my application
+- Work will take place within the VScode IDE for visual clarity and ease of use for commits and updates
