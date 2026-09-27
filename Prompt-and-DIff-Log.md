@@ -38,3 +38,11 @@ After creating My own domain model using a class format, I compared it to the or
 
 **Notes:**
 Sucessful domain genereated and both critique and handmade domain model uploaded into "Ai Draft Domain model.pdf"
+
+## Entry 4 (As of 9/27/2026)
+
+** Updated information: **
+The Github repository has been updated to include information as to how the website will operate based on what the client will see upon the webpage loading.
+
+**Notes: **
+The application now has a structered format that the developer will use to not get lost during the development.
