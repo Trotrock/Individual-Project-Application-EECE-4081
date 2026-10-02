@@ -46,3 +46,17 @@ The Github repository has been updated to include information as to how the webs
 
 **Notes: **
 The application now has a structered format that the developer will use to not get lost during the development.
+
+## Entry 5 (As of 10/2/2026)
+# AI Development & Prompt-and-Diff Log
+
+## Milestone Goal
+Build a working thin-slice walking skeleton for an FC Barcelona Sports Tracker using Python and Django, backed by an automated CI pipeline.
+
+## Architectural Layers Implemented
+- **Ingest:** Configured `SportsApiClient` using `requests` to handle authentic over-the-network data fetching from a live public API stream.
+- **Process & Storage:** Implemented database abstraction models utilizing SQLite to record transaction structures natively.
+- **Render:** Set up explicit view boundaries returning functional confirmation statuses back to the browser.
+
+## Automated CI Configuration
+Created `.github/workflows/ci.yml` running a custom Ubuntu container test suite verifying Django settings, dependencies (`python-dotenv`, `requests`), and system test invocations automatically on every code push.
