@@ -15,3 +15,19 @@ venv/
 # OS files
 .DS_Store
 Thumbs.db
+
+# Local Environment & API Secret Keys
+.env
+
+# Python Virtual Environment
+venv/
+ENV/
+env/
+
+# Local Backend Database Files
+*.sqlite3
+
+# Python Cache & Compilation Artifacts
+__pycache__/
+*.py[cod]
+*$py.class
