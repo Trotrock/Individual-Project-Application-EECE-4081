@@ -6,10 +6,6 @@ on:
   pull_request:
     branches: [ main, master ]
 
-defaults:
-  run:
-    working-directory: project
-
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
@@ -24,10 +20,13 @@ jobs:
         python-version: '3.12'
 
     - name: Install Dependencies
+      # This looks for any directory level matching project case structures natively
       run: |
+        cd [pP]roject* 2>/dev/null || cd .
         python -m pip install --upgrade pip
-        pip install -r requirements.txt
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
     - name: Run System Tests
       run: |
+        cd [pP]roject* 2>/dev/null || cd .
         python manage.py test
