@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [ main, master ]
 
+defaults:
+  run:
+    working-directory: project
+
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
@@ -20,14 +24,10 @@ jobs:
         python-version: '3.12'
 
     - name: Install Dependencies
-      # Fix: Changes directory into project before executing package installations
       run: |
-        cd project
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
     - name: Run System Tests
-      # Fix: Changes directory into project before initiating the test suite execution pass
       run: |
-        cd project
         python manage.py test
