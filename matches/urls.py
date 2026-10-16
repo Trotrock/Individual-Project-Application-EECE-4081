@@ -3,4 +3,5 @@ from . import views
 
 urlpatterns = [
     path('sync/', views.sync_and_render_match, name='sync_match'),
+    path('dashboard/', views.standings_dashboard, name='standings_dashboard'),
 ]
