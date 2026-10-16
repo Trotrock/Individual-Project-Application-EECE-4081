@@ -83,8 +83,9 @@ class Match(models.Model):
     away_score = models.IntegerField(null=True, blank=True)
     is_finished = models.BooleanField(default=False)
 
+
     def __str__(self):
-        return f"{self.home_team} vs {self.away_team} - {self.match_date.date()}"
+        return f"{self.home_team} vs {self.away_team}"
 
 
 class TeamFormation(models.Model):
