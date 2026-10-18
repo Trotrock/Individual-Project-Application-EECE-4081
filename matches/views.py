@@ -16,10 +16,13 @@ def standings_dashboard(request):
     )
     
     # 2. Fetch FC Barcelona's Next Upcoming Match
-    # Looks for any match where FC Barcelona is either home or away
+#Original code
     next_match = Match.objects.filter(
         models.Q(home_team__name="FC Barcelona") | models.Q(away_team__name="FC Barcelona")
     ).order_by('match_date').first()
+#2 Ijected bug to break the next match fetch logic for testing purposes
+ #   next_match = Match.objects.filter(is_finished=True).order_by('match_date').first()  
+
 
     # 3. Fetch FC Barcelona's Tactical Formation for that match
     barca_formation = None
