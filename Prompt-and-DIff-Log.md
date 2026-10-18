@@ -60,3 +60,19 @@ Build a working thin-slice walking skeleton for an FC Barcelona Sports Tracker u
 
 ## Automated CI Configuration
 Created `.github/workflows/ci.yml` running a custom Ubuntu container test suite verifying Django settings, dependencies (`python-dotenv`, `requests`), and system test invocations automatically on every code push.
+
+
+## Entry 6 (As of 10/18/2026)
+**prompt: ** verify that the current bug injection will create a negative during injection_fault testing
+
+** AI Suggestion: ** introduce a inverted filter fault into `next_match` under `views.py`
+
+** diff summary: **
+```
+---matches/views.py (original working base)
++++matches/views.py (Fault Injection)
+- mext_match = Match.objects.filter(models.Q(home_team__name="FC Barcelona") | models.Q(away_team__name="FC Barcelona")).order_by('match_date').first()
++ next_match = Match.objects.filter(is_finished=True).order_by('match_date').first()
+```
+
+
