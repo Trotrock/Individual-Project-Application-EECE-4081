@@ -21,7 +21,7 @@ def standings_dashboard(request):
         models.Q(home_team__name="FC Barcelona") | models.Q(away_team__name="FC Barcelona")
     ).order_by('match_date').first()
 #2 Ijected bug to break the next match fetch logic for testing purposes
- #   next_match = Match.objects.filter(is_finished=True).order_by('match_date').first()  
+    #next_match = Match.objects.filter(is_finished=True).order_by('match_date').first()  
 
 
     # 3. Fetch FC Barcelona's Tactical Formation for that match
@@ -229,6 +229,7 @@ def sync_and_render_match(request):
         }
     )
 
+
     # 4. Ingest & Store Match Tactical Lineups (Formations)
     for team_name, form_info in api_data["formations"].items():
         current_team = Team.objects.get(name=team_name)
@@ -238,16 +239,6 @@ def sync_and_render_match(request):
             defaults={"system": form_info["system"]}
         )
         
-    # 4. Ingest & Store Match Tactical Lineups (Formations)
-    for team_name, form_info in api_data["formations"].items():
-        current_team = Team.objects.get(name=team_name)
-        formation_record, _ = TeamFormation.objects.get_or_create(
-            match=match_record,
-            team=current_team,
-            defaults={"system": form_info["system"]}
-        )
-        
-        # ADD THESE LINES RIGHT HERE (Indented inside the formations loop)
         for player_name in form_info["starters"]:
             try:
                 p = Player.objects.get(team=current_team, name=player_name)
