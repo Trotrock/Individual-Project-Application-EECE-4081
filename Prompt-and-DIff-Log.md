@@ -75,4 +75,10 @@ Created `.github/workflows/ci.yml` running a custom Ubuntu container test suite 
 + next_match = Match.objects.filter(is_finished=True).order_by('match_date').first()
 ```
 
+## Entry 7 (As of 10/26/2026)
+** Prompt: ** Analyze `views.py` and describe the reason why current and how current codebase can be refactored
 
+** AI suggestion: ** Highlighted the HMTL block of code that was hardcoded into `views.py` and described the 'Smell' coming from this code and how it is currently detremental to doing UI changes for my main page.
+Provided suggestions on how to refactor, which included the option to remove and add the HTML code to a seperate document that allows the developer to independently update and add any desired UI fixed without jeporadizing the codebase and risk potential creashes
+
+**Result: ** Code was refactored to suggest AI functions and tested results before and after showing that the previous hardcoded code vs the refactored code operated the exact same and completed and validated results in the same amount of time
