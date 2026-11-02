@@ -4,6 +4,8 @@ from django.db import models
 from .client import SportsApiClient
 from .models import League, Team, LeagueTableEntry, Player, Match, TeamFormation
 from datetime import datetime, timezone
+import logging
+from django.http import JsonResponse
 
 def standings_dashboard(request):
     """
@@ -42,19 +44,43 @@ def standings_dashboard(request):
     
     return render(request, 'matches/dashboard.html', context)
 
-
 def sync_and_render_match(request):
     """
     Executes the ingestion sync pipeline.
     Parses the full 20-team ecosystem from client.py and saves it cleanly.
     """
+    # Initialize the logger instance
+    logger = logging.getLogger("matches.views")
+    
+    # Line 1: Log the start of the operation
+    logger.info("Initiating external sports API match sync")
+    
     client = SportsApiClient()
     try:
+        # Line 2: Log the outgoing request check
+        logger.info("Checking database and contacting upstream match stats endpoint")
+        
+        # --- SIMULATION FOR RUNBOOK ASSIGNMENT ---
+        # Add '?fail=true' to the URL to instantly simulate the runbook failure criteria
+        if request.GET.get("fail") == "true":
+            raise TimeoutError("Connection to ://sportsapi.com timed out after 5000ms")
+        # ----------------------------------------
+        
         api_data = client.fetch_latest_match()
+        
     except Exception as e:
-        return HttpResponse(f"<h3>Sync Failed: {str(e)}</h3>")
+        # Line 3 (Failure): Machine-parseable record capturing structured extra details
+        logger.error("Failed to complete match sync operation", extra={
+            "extra_data": {
+                "api_endpoint": "://sportsapi.com/v1/matches", 
+                "error_type": type(e).__name__,
+                "status_code": 504
+            }
+        })
+        return HttpResponse(f"<h3>Sync Failed: {str(e)}</h3>", status=504)
     
     if not api_data:
+        logger.warning("Data sync completed but payload returned empty results")
         return HttpResponse("<h3>No data retrieved.</h3>")
 
     # 1. Ingest & Store League
@@ -128,8 +154,31 @@ def sync_and_render_match(request):
             except Player.DoesNotExist:
                 pass
 
+    # Line 3 (Success Path): Record metric details structurally
+    logger.info("Successfully completed ingestion sync pipeline processing", extra={
+        "extra_data": {"league_name": league.name, "status_code": 200}
+    })
+
     return HttpResponse(
         f"<h3>Data Sync Pipeline Complete!</h3>"
         f"<p>Automated processing finished. Head back to the <a href='/'>Home Dashboard</a> "
         f"to see your updated standings with Goal Difference sorting!</p>"
     )
+
+
+
+logger = logging.getLogger(__name__)
+
+def match_detail_view(request, match_id):
+    logger.info(f"Fetching record data for match", extra={
+        "extra_data": {"match_id": match_id}
+    })
+    
+    try:
+        raise ValueError("Match data payload corrupt")
+        
+    except Exception as e:
+        logger.error("Failed to retrieve match metrics", extra={
+            "extra_data": {"match_id": match_id, "error_msg": str(e), "status_code": 500}
+        })
+        return JsonResponse({"status": "error", "message": "Internal error"}, status=500)
