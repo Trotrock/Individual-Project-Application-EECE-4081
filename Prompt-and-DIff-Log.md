@@ -82,3 +82,24 @@ Created `.github/workflows/ci.yml` running a custom Ubuntu container test suite 
 Provided suggestions on how to refactor, which included the option to remove and add the HTML code to a seperate document that allows the developer to independently update and add any desired UI fixed without jeporadizing the codebase and risk potential creashes
 
 **Result: ** Code was refactored to suggest AI functions and tested results before and after showing that the previous hardcoded code vs the refactored code operated the exact same and completed and validated results in the same amount of time
+
+## Entry 8 (As of 11/2/2026)
+**Prompt: ** Give me a recommendations on how to add structured logging to my web application to allow for development and debugging opportunities to replicate real-life scenario where a developer might use logging as a assistive tool
+
+**AI suggestion: ** The AI provided coding suggestion that was later implemented into `log_filters.py`:
+class JSONFormatter(logging.Formatter):
+    def format(self, record):
+        log_data = {
+            "timestamp": self.formatTime(record, self.datefmt),
+            "level": record.levelname,
+            "trace_id": request_trace_id.get(),
+            "message": record.getMessage(),
+            "logger": record.name
+        }
+        if hasattr(record, "extra_data"):
+            log_data.update(record.extra_data)
+            
+        return json.dumps(log_data)
+This small snippest was suggested to allow a clear structuring format for the logger to use when generating the action
+
+**Result: ** After implementing the following snippet of code to the program, `py manage.py runserver` was executed and then the developer did a series of actions to test the logging structure and ensuring the Logger is accurately generating a unique ID for that respective action taken (Such as refreshing to the live API client)
